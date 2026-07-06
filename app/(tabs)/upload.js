@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 
@@ -29,6 +29,7 @@ const UPLOAD_ERROR = 'Unable to upload your image. Please try again.';
 export default function UploadTab() {
   const { colors } = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const router = useRouter();
   const upload = useUploadImage();
   const deleteImage = useDeleteImage();
 
@@ -71,6 +72,8 @@ export default function UploadTab() {
       onSuccess: (created) => {
         setUploaded(created);
         Toast.show({ type: 'success', text1: 'Cat uploaded!' });
+        // Upload succeeded — send the user back to the home screen.
+        router.replace('/');
       },
       onError: (e) => {
         setError(UPLOAD_ERROR);
